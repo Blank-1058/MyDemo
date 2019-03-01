@@ -1,7 +1,7 @@
-package dataStructure.linkedList.demo;
+package datastructure.linkedlist.demo;
 
-import dataStructure.linkedList.SinglyNodeUtils;
-import dataStructure.linkedList.SinglyListNode;
+import datastructure.linkedlist.SinglyNodeUtils;
+import datastructure.linkedlist.SinglyListNode;
 
 /**
  * 单向链表反转

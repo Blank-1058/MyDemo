@@ -1,7 +1,7 @@
-package dataStructure.linkedList.demo;
+package datastructure.linkedlist.demo;
 
-import dataStructure.linkedList.SinglyListNode;
-import dataStructure.linkedList.SinglyNodeUtils;
+import datastructure.linkedlist.SinglyListNode;
+import datastructure.linkedlist.SinglyNodeUtils;
 
 /**
  * 查找单向链表的中间节点

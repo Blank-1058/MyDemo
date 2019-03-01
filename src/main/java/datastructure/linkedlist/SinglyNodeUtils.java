@@ -1,4 +1,4 @@
-package dataStructure.linkedList;
+package datastructure.linkedlist;
 
 /**
  * 链表工具类
