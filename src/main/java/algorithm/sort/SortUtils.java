@@ -90,4 +90,42 @@ public class SortUtils {
 //
 //    }
 
+    /**
+     * 快速排序
+     * @param nums
+     * @return
+     */
+    public static int[] quickSort(int[] nums){
+        int lowIndex=0,highIndex=nums.length-1;
+        quickSort(nums,lowIndex,highIndex);
+        return nums;
+    }
+
+    private static void quickSort(int[] nums,int lowIndex,int highIndex){
+        if(lowIndex>=highIndex){
+            return;
+        }
+        int base=nums[lowIndex];
+        int i=lowIndex,j=highIndex;
+        while (i!=j){
+            for(;j>i;j--){
+                if(nums[j]<base){
+                    int tmp=nums[j];
+                    nums[j]=nums[i];
+                    nums[i]=tmp;
+                    break;
+                }
+            }
+            for(;i<j;i++){
+                if(nums[i]>base){
+                    int tmp=nums[i];
+                    nums[i]=nums[j];
+                    nums[j]=tmp;
+                    break;
+                }
+            }
+        }
+        quickSort(nums,lowIndex,i-1);
+        quickSort(nums,i+1,highIndex);
+    }
 }
