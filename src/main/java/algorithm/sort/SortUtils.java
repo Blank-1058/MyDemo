@@ -89,6 +89,10 @@ public class SortUtils {
 //    public static int[] mergeSort(int[] nums){
 //
 //    }
+//
+//    private static void mergeSort(int[] nums,int lowIndex,int highIndex){
+//
+//    }
 
     /**
      * 快速排序
@@ -128,4 +132,6 @@ public class SortUtils {
         quickSort(nums,lowIndex,i-1);
         quickSort(nums,i+1,highIndex);
     }
+
+
 }
