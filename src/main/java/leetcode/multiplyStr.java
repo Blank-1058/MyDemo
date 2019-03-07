@@ -13,7 +13,7 @@ package leetcode;
 public class multiplyStr {
 
     public static void main(String[] arg0){
-        System.out.println(multiply("969","56"));
+        System.out.println(multiply("545132","55546"));
     }
 
     public static String multiply(String num1, String num2) {
@@ -27,10 +27,10 @@ public class multiplyStr {
         for(int i=size1-1;i>=0;i--){
             for(int j=size2-1;j>=0;j--){
                 int multiply=(num1.charAt(i)-'0')*(num2.charAt(j)-'0');
-                multiplyFlag=multiply%10;
-                carryFlag=multiply/10+(multiplyFlag+resultArray[i+j+1])/10;
-                resultArray[i+j+1]=(multiplyFlag+resultArray[i+j+1])%10;
-                resultArray[i+j]=carryFlag;
+                multiplyFlag=(multiply+resultArray[i+j+1])%10;
+                carryFlag=(multiply+resultArray[i+j+1])/10;;
+                resultArray[i+j+1]=multiplyFlag;
+                resultArray[i+j]+=carryFlag;
             }
         }
         StringBuilder result=new StringBuilder();
