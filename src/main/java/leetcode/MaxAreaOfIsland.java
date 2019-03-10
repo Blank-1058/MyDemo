@@ -1,5 +1,8 @@
 package leetcode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 岛屿的最大面积
  *
@@ -10,6 +13,28 @@ package leetcode;
 public class MaxAreaOfIsland {
 
     public int maxAreaOfIsland(int[][] grid) {
+
+        List<String> islandIndex=new ArrayList<>();
+        int width=grid[0].length;
+        int hight=grid.length;
+        for(int i=0;i<width;i++){
+            for(int j=0;j<hight;j++){
+
+                String index=String.valueOf(i)+String.valueOf(j);
+                if(islandIndex.contains(index)){
+                    continue;
+                }
+                if(grid[i][j]==1){
+                    islandIndex.add(index);
+
+                }
+            }
+        }
+
         return 0;
+    }
+
+    public void maxAreaOfIsland(int[][] grid,int i,int j,List<String> islandIndex){
+
     }
 }
