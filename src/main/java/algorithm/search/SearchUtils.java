@@ -30,9 +30,10 @@ public class SearchUtils {
                 lowIndex=mid+1;
             }
         }
+        if(array[lowIndex]==target){
+            targetIndex = lowIndex;
+        }
         return targetIndex;
     }
-
-
 
 }
