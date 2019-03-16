@@ -16,12 +16,20 @@ public class SearchTest {
         binarySearchTree.insert(1,1);
         binarySearchTree.insert(3,3);
         binarySearchTree.insert(6,6);
+
+        System.out.println("get:"+binarySearchTree.get(5).getValue());
+
         System.out.println("前序遍历");
         binarySearchTree.preOrderTraversal(binarySearchTree.root);
         System.out.println("中序遍历");
         binarySearchTree.inOrderTraversal(binarySearchTree.root);
         System.out.println("后序遍历");
         binarySearchTree.postOrderTraversal(binarySearchTree.root);
+
+        binarySearchTree.deleteNode(5);
+        System.out.println("中序遍历");
+        binarySearchTree.inOrderTraversal(binarySearchTree.root);
+
 
     }
 

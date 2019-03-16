@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 岛屿的最大面积
+ * 岛屿的最大面积(思路：图的深度优先搜索)
  *
  * 给定一个包含了一些 0 和 1的非空二维数组 grid , 一个 岛屿 是由四个方向 (水平或垂直) 的 1 (代表土地) 构成的组合。你可以假设二维矩阵的四个边缘都被水包围着。
  *
@@ -35,6 +35,7 @@ public class MaxAreaOfIsland {
     }
 
     public void maxAreaOfIsland(int[][] grid,int i,int j,List<String> islandIndex){
+
 
     }
 }

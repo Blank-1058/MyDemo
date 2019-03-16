@@ -151,6 +151,10 @@ public class BinarySearchTree {
         if(directPostNode!=delNode.getRight()){
             parentNode.setLeft(directPostNode.getRight());
             directPostNode.setRight(null);
+        }else{
+            //当后继节点为待删除节点的右子节点时，直接删除右子节点
+            parentNode.setRight(directPostNode.getRight());
+            directPostNode.setRight(null);
         }
         return directPostNode;
     }
