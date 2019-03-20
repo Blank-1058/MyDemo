@@ -33,7 +33,7 @@ public class MergeTwoLists {
         return result.next;
     }
 
-    public class ListNode {
+    class ListNode {
         int val;
         ListNode next;
 
