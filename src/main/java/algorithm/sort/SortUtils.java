@@ -86,13 +86,54 @@ public class SortUtils {
      * @param nums
      * @return
      */
-//    public static int[] mergeSort(int[] nums){
-//
-//    }
-//
-//    private static void mergeSort(int[] nums,int lowIndex,int highIndex){
-//
-//    }
+    public static void mergeSort(int[] nums){
+        int[] tmp=new int[nums.length];
+        mergeSort(nums,0,nums.length-1,tmp);
+    }
+
+    private static void mergeSort(int[] nums,int lowIndex,int highIndex,int[] tmp){
+        if(lowIndex>=highIndex){
+            return;
+        }
+        int mid=(lowIndex+highIndex)/2;
+        mergeSort(nums,lowIndex,mid,tmp);
+        mergeSort(nums,mid+1,highIndex,tmp);
+        mergeArray(nums,lowIndex,highIndex,mid,tmp);
+    }
+
+    /**
+     * 合并两个有序数组
+     * @param nums
+     * @param lowIndex
+     * @param highIndex
+     * @param mid
+     * @param tmp
+     */
+    private static void mergeArray(int[] nums,int lowIndex,int highIndex,int mid,int[] tmp){
+        int tmpIndex=0;
+        int i=lowIndex;
+        int j=mid+1;
+        while(i<=mid && j<=highIndex){
+            if(nums[i]<=nums[j]){
+                tmp[tmpIndex++]=nums[i++];
+            }else{
+                tmp[tmpIndex++]=nums[j++];
+            }
+        }
+        //当左边区间还有元素时，将剩余元素放到tmp中
+        while(i<=mid){
+            tmp[tmpIndex++]=nums[i++];
+        }
+        //当右边区间还有元素时，将剩余元素放到tmp中
+        while(j<=highIndex){
+            tmp[tmpIndex++]=nums[j++];
+        }
+        //当tmp中的元素放回原数组
+        tmpIndex=0;
+        while(lowIndex<=highIndex){
+            nums[lowIndex++]=tmp[tmpIndex++];
+        }
+    }
 
     /**
      * 快速排序

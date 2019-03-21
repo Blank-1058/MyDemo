@@ -27,12 +27,15 @@ public class SortTest {
         System.out.println("selectionSort:");
         printArrays(resultSelection);
 
-
-
         //快速排序
         int[] resultQuick=SortUtils.quickSort(nums);
         System.out.println("quickSort:");
         printArrays(resultQuick);
+
+        //归并排序
+        SortUtils.mergeSort(nums);
+        System.out.println("mergeSort:");
+        printArrays(nums);
     }
 
     private static void printArrays(int[] nums){
