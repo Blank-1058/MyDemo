@@ -26,7 +26,29 @@ package leetcode;
  */
 public class MaxProfitII {
 
+    /**
+     * 找到波峰和波谷，计算差值求和即可
+     * @param prices
+     * @return
+     */
     public int maxProfit(int[] prices) {
-        return 0;
+        int totalProfit=0;
+        int i=0;
+        while(i<prices.length-1){
+            while(i<prices.length-1 && prices[i]>=prices[i+1]){
+                //此时股票处于下降节点，不进行操作
+                //当循环中断表示股票开始上升，此时开始买入
+                i++;
+            }
+            int buy=prices[i];
+            while (i<prices.length-1 && prices[i]<=prices[i+1]){
+                //此时处于上升阶段，不进行操作
+                //当循环完毕则表示股票开始下降，此时开始卖出
+                i++;
+            }
+            int sell=prices[i];
+            totalProfit+=(sell-buy);
+        }
+        return totalProfit;
     }
 }
