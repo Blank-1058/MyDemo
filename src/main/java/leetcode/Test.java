@@ -26,5 +26,15 @@ public class Test {
         String result=allOne.getMaxKey();
         result=allOne.getMaxKey();
 
+
+        LRUCache obj = new LRUCache(2);
+        obj.put(2,1);
+        obj.put(3,2);
+        int value=obj.get(3);
+        value=obj.get(2);
+        obj.put(4,3);
+        value=obj.get(2);
+        value=obj.get(3);
+        value=obj.get(4);
     }
 }
