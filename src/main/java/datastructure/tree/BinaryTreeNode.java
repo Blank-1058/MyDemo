@@ -10,6 +10,13 @@ public class BinaryTreeNode {
     private BinaryTreeNode leftNode;
     private BinaryTreeNode rightNode;
 
+    public BinaryTreeNode() {
+    }
+
+    public BinaryTreeNode(int val) {
+        this.val = val;
+    }
+
     public int getVal() {
         return val;
     }
