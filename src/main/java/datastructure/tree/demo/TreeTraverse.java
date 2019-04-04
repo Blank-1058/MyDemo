@@ -147,17 +147,22 @@ public class TreeTraverse {
      */
     public static List<Integer> postorderTraverseNotRecursion(BinaryTreeNode root){
         List<Integer> result=new ArrayList<>();
-        Stack<BinaryTreeNode> stack=new Stack<>();
-        //当前访问的节点
-        BinaryTreeNode curNode=root;
-        //上一次访问的节点
-        BinaryTreeNode lastNode=null;
-        while(!stack.empty()){
-            while(curNode!=null){
-                stack.push(curNode);
-                lastNode=curNode;
-                curNode=curNode.getLeftNode();
+        Stack<BinaryTreeNode> stack1=new Stack<>();
+        Stack<BinaryTreeNode> stack2=new Stack<>();
+        stack1.push(root);
+        while(!stack1.empty()){
+            BinaryTreeNode node=stack1.pop();
+            stack2.push(node);
+            if(node.getLeftNode()!=null){
+                stack1.push(node.getLeftNode());
             }
+            if(node.getRightNode()!=null){
+                stack1.push(node.getRightNode());
+            }
+        }
+        if(!stack2.isEmpty()){
+            BinaryTreeNode node=stack2.pop();
+            result.add(node.getVal());
         }
         return result;
     }
