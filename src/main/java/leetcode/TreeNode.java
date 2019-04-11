@@ -23,15 +23,26 @@ public class TreeNode {
         int i = 1;
         while (!queue.isEmpty()) {
             TreeNode parent = queue.poll();
-            TreeNode left = new TreeNode(nums[i++]);
-            parent.left = left;
-            queue.offer(left);
+            int value=nums[i++];
+            if(value==Integer.MIN_VALUE){
+                parent.left=null;
+            }else{
+                TreeNode left = new TreeNode(value);
+                parent.left = left;
+                queue.offer(left);
+            }
             if (i >= nums.length) {
                 break;
             }
-            TreeNode right = new TreeNode(nums[i++]);
-            parent.right = right;
-            queue.offer(right);
+
+            value=nums[i++];
+            if(value==Integer.MIN_VALUE){
+                parent.right=null;
+            }else{
+                TreeNode right = new TreeNode(value);
+                parent.right = right;
+                queue.offer(right);
+            }
             if (i >= nums.length) {
                 break;
             }
