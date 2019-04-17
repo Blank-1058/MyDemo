@@ -15,26 +15,31 @@ public class Test {
 //        min=minStack.getMin();
 //        System.out.println(min);
 
-        AllOne allOne=new AllOne();
-        allOne.inc("a");
-        allOne.inc("b");
-        allOne.inc("b");
-        allOne.inc("b");
-        allOne.inc("b");
-        allOne.dec("b");
-        allOne.dec("b");
-        String result=allOne.getMaxKey();
-        result=allOne.getMaxKey();
+//        AllOne allOne=new AllOne();
+//        allOne.inc("a");
+//        allOne.inc("b");
+//        allOne.inc("b");
+//        allOne.inc("b");
+//        allOne.inc("b");
+//        allOne.dec("b");
+//        allOne.dec("b");
+//        String result=allOne.getMaxKey();
+//        result=allOne.getMaxKey();
+//
+//
+//        LRUCache obj = new LRUCache(2);
+//        obj.put(2,1);
+//        obj.put(3,2);
+//        int value=obj.get(3);
+//        value=obj.get(2);
+//        obj.put(4,3);
+//        value=obj.get(2);
+//        value=obj.get(3);
+//        value=obj.get(4);
 
+        double result=(double)29/2;
+//        double rest=29%2;
 
-        LRUCache obj = new LRUCache(2);
-        obj.put(2,1);
-        obj.put(3,2);
-        int value=obj.get(3);
-        value=obj.get(2);
-        obj.put(4,3);
-        value=obj.get(2);
-        value=obj.get(3);
-        value=obj.get(4);
+        System.out.println(result);
     }
 }
