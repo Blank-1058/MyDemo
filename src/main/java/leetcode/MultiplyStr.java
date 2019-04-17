@@ -10,7 +10,7 @@ package leetcode;
  * 不能使用任何标准库的大数类型（比如 BigInteger）或直接将输入转换为整数来处理
  * @author liukang_lc on 2019/3/7
  */
-public class multiplyStr {
+public class MultiplyStr {
 
     public static void main(String[] arg0){
         System.out.println(multiply("545132","55546"));
