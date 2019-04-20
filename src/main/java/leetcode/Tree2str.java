@@ -41,8 +41,19 @@ public class Tree2str {
 
     public String tree2str(TreeNode t) {
         StringBuilder result=new StringBuilder();
-        return "";
+        if(t==null){
+            return result.toString();
+        }
+        result.append(t.val);
+        if(t.left==null && t.right==null){
+            return result.toString();
+        }
+        result.append("(").append(tree2str(t.left)).append(")");
 
+        if(t.right!=null){
+            result.append("(").append(tree2str(t.right)).append(")");
+        }
+        return result.toString();
     }
 
 }
