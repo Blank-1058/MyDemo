@@ -1,6 +1,6 @@
 package leetcode;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * 输出二叉树
@@ -51,14 +51,109 @@ import java.util.List;
  */
 public class PrintTree {
 
+    public static void main(String[] arg0){
+        TreeNode root=TreeNode.createTree(new int[]{1,2,3,Integer.MIN_VALUE,4});
+        List<List<String>> result=printTree(root);
+    }
+
     /**
      * 先求出树的深度，然后计算出树的最大宽度，即m和n
      * 其中n=2^m-1
      * @param root
      * @return
      */
-    public List<List<String>> printTree(TreeNode root) {
-        return null;
+    public static List<List<String>> printTree(TreeNode root) {
+        List<List<String>> result=new ArrayList<>();
+        if(root==null){
+            return result;
+        }
+        //先求树的最大深度，即行数
+        int m=maxDepth(root);
+        //计算列数
+        int n= (int) (Math.pow(2,m)-1);
+        //存放树的节点在数组中的索引
+        List<List<Integer>> index=new ArrayList<>();
+        for(int i=1;i<=m;i++){
+            //计算每一层第一个节点所在的索引
+            int startIndex= (int) (n/Math.pow(2,i));
+            List<Integer> rowIndex=new ArrayList<>();
+            rowIndex.add(startIndex);
+            //计算每一层节点数
+            int nodeNum= (int) Math.pow(2,i-1);
+            //计算每个节点与每个节点之间索引的增量
+            int increment= (int) Math.pow(2,(m-i+1));
+            int indexTmp=startIndex;
+            for(int j=0;j<nodeNum-1;j++){
+                indexTmp+=increment;
+                rowIndex.add(indexTmp);
+            }
+            index.add(rowIndex);
+        }
+        //对二叉树进行层序遍历
+        Queue<TreeNode> queue=new LinkedList<>();
+        queue.offer(root);
+        //当前层
+        int currentRow=1;
+        //当前层的节点所在的索引
+        List<Integer> currentIndexRow=index.get(currentRow-1);
+        //当前层节点数量
+        int currentRowNodeNum=currentIndexRow.size();
+        //当前层第几个节点
+        int currentNode=0;
+        String[] rowStr=intStrArray(n);
+        while(currentRow<=m){
+            TreeNode node=queue.poll();
+            int currentIndex=currentIndexRow.get(currentNode);
+            if(node!=null){
+                rowStr[currentIndex]=String.valueOf(node.val);
+                queue.offer(node.left);
+                queue.offer(node.right);
+            }else{
+                queue.offer(null);
+                queue.offer(null);
+            }
+            currentRowNodeNum--;
+            currentNode++;
+            if(currentRowNodeNum==0){
+                //表示当前层节点已经全部输出，开始下一层
+                currentRow++;
+                result.add(Arrays.asList(rowStr));
+                rowStr=intStrArray(n);
+                if(currentRow>m){
+                    break;
+                }
+                currentIndexRow=index.get(currentRow-1);
+                currentRowNodeNum=currentIndexRow.size();
+                currentNode=0;
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * 求树的最大深度
+     * @param node
+     * @return
+     */
+    private static int maxDepth(TreeNode node){
+        if(node==null){
+            return 0;
+        }
+        int left=maxDepth(node.left);
+        int right=maxDepth(node.right);
+        return Math.max(left,right)+1;
+    }
+
+    /**
+     * 初始化一个空字符串数组
+     * @param n
+     * @return
+     */
+    private static String[] intStrArray(int n){
+        String[] result=new String[n];
+        Arrays.fill(result,"");
+        return result;
     }
 
 }
