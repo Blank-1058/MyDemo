@@ -68,7 +68,37 @@ public class WidthOfBinaryTree {
         if(root==null){
             return 0;
         }
-        return 0;
+        int maxDepth=maxDepth(root);
+        Queue<TreeNode> queue=new LinkedList<>();
+        queue.offer(root);
+        //当前层数
+        int currentRow=1;
+        //对于满二叉树来说当前层的节点数
+        int currentNodeNum= (int) Math.pow(2,currentRow-1);
+        int maxWidth=0;
+        //存放当前层的节点值，为null则表示无节点
+        List<Integer> rowNodes=new ArrayList<>();
+        while(currentRow<=maxDepth){
+            TreeNode node=queue.poll();
+            if(node!=null){
+                rowNodes.add(node.val);
+                queue.offer(node.left);
+                queue.offer(node.right);
+            }else{
+                rowNodes.add(null);
+                queue.offer(null);
+                queue.offer(null);
+            }
+            currentNodeNum--;
+            if(currentNodeNum==0){
+                //表示当前层已经没有节点，进入下一层
+                currentRow++;
+                currentNodeNum=(int) Math.pow(2,currentRow-1);
+                maxWidth=Math.max(maxWidth,getWidth(rowNodes));
+                rowNodes.clear();
+            }
+        }
+        return maxWidth;
     }
 
     /**
@@ -87,19 +117,27 @@ public class WidthOfBinaryTree {
 
     /**
      * 计算每一层的宽度
-     * 即去掉列表右边为空的节点后的列表长度
+     * 即去掉列表前后为空的节点后的列表长度
      * @param nodes
      * @return
      */
     private static int getWidth(List<Integer> nodes){
-        int nullNum=0;
-        for(int i=nodes.size()-1;i>=0;i--){
-            if(nodes.get(i)==null){
-                nullNum++;
-            }else{
+        int startIndex=0;
+        int endIndex=nodes.size()-1;
+        //找出列表开始不为空的索引位置
+        for(int i=0;i<nodes.size();i++){
+            if(nodes.get(i)!=null){
+                startIndex=i;
                 break;
             }
         }
-        return nodes.size()-nullNum;
+        //找出列表结尾不为空的索引位置
+        for(int i=nodes.size()-1;i>=0;i--){
+            if(nodes.get(i)!=null){
+                endIndex=i;
+                break;
+            }
+        }
+        return endIndex-startIndex+1;
     }
 }
