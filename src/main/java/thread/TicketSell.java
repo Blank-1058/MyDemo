@@ -20,12 +20,17 @@ public class TicketSell {
     private static class Station1 extends Thread{
         @Override
         public void run() {
-            synchronized (ticketNum){
+            /*********************synchronized说明*******************************/
+            /** 如果对ticketNum对象加锁，即synchronized (ticketNum)              **/
+            /** 会造成一直是station1在卖票，因为sleep并不会释放锁，                 **/
+            /** Station1会一直持有ticketNum对象，导致其他station无法获取到ticketNum**/
+            /*******************************************************************/
+            synchronized (this){
                 while(ticketNum.num!=0){
                     ticketNum.num--;
                     System.out.println("station1卖出了一张票，还剩"+ticketNum.num+"张");
                     try {
-                        Thread.sleep(200);
+                        sleep(500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -38,12 +43,12 @@ public class TicketSell {
     private static class Station2 extends Thread{
         @Override
         public void run() {
-            synchronized (ticketNum){
+            synchronized (this){
                 while(ticketNum.num!=0){
                     ticketNum.num--;
                     System.out.println("station2卖出了一张票，还剩"+ticketNum.num+"张");
                     try {
-                        Thread.sleep(200);
+                        sleep(200);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -56,12 +61,12 @@ public class TicketSell {
     private static class Station3 extends Thread{
         @Override
         public void run() {
-            synchronized (ticketNum){
+            synchronized (this){
                 while(ticketNum.num!=0){
                     ticketNum.num--;
                     System.out.println("station3卖出了一张票，还剩"+ticketNum.num+"张");
                     try {
-                        Thread.sleep(200);
+                        sleep(100);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
