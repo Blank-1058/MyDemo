@@ -25,12 +25,41 @@ public class OrderUtils {
         return array;
     }
 
+    /**
+     * 选择排序
+     * 首先在未排序数组中找到最小(大)元素，将这个元素放置到未排序数组的头部，然后继续在剩余未排序数组中执行相同操作，直到最后一个元素
+     * @param array
+     * @return
+     */
+    public static int[] selectSort(int[] array){
+        for(int i=0;i<array.length;i++){
+            int minIndex=i;
+            for(int j=i+1;j<array.length;j++){
+                if(array[j]<array[minIndex]){
+                    minIndex=j;
+                }
+            }
+            if(minIndex!=i){
+                int tmp=array[minIndex];
+                array[minIndex]=array[i];
+                array[i]=tmp;
+            }
+        }
+        return array;
+    }
+
     public static void main(String[] args) {
         int[] a= getRandom(1,100,20);
+        System.out.println("原始数据");
         printArray(a);
 
-        int[] tmp=bubleSort(a);
-        printArray(tmp);
+        int[] buble=bubleSort(a);
+        System.out.println("冒泡");
+        printArray(buble);
+
+        int[] select=selectSort(a);
+        System.out.println("选择");
+        printArray(select);
     }
 
     /**
