@@ -6,7 +6,7 @@ package thread;
  */
 public class TicketSell {
 
-    public static TicketNum ticketNum=new TicketNum(50);
+    public static TicketNum ticketNum=new TicketNum(1000);
 
     public static void main(String[] arg0){
         Station1 station1=new Station1();
@@ -30,10 +30,14 @@ public class TicketSell {
                     ticketNum.num--;
                     System.out.println("station1卖出了一张票，还剩"+ticketNum.num+"张");
                     try {
+                        // sleep也会释放cpu，在指定时间内并不会重新执行
                         sleep(500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                    // yield也会释放CPU，但是会进入runable状态,有可能会重新开始执行
+                    // 会使进程重新进入runable状态，与其他同优先级的线程进行CPU时间的竞争中
+//                    yield();
                 }
                 System.out.println("station1发现票卖完了");
             }
@@ -52,6 +56,7 @@ public class TicketSell {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+//                    yield();
                 }
                 System.out.println("station2发现票卖完了");
             }
@@ -70,6 +75,7 @@ public class TicketSell {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+//                    yield();
                 }
                 System.out.println("station3发现票卖完了");
             }
