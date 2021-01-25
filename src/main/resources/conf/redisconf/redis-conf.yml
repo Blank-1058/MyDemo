@@ -1,0 +1,43 @@
+redis:
+  # 服务地址
+  host: 10.110.2.83
+  # 端口
+  port: 6379
+  # 密码
+  password: root.inspur
+  # 连接超时时间，单位秒
+  timeout: 10
+  # 连接的数据库索引
+  database: 0
+  # 客户端名称
+  clientName:
+  # 是否启用ssl
+  ssl: false
+  # 线程池资源
+  pool:
+    # 连接池中的最大空闲连接
+    maxIdle: 8
+    # 连接池中的最小空闲连接
+    minIdle: 0
+    # 连接池的最大数据库连接数
+    maxActive: 8
+#    # cluster模式配置
+#    cluster:
+#      # list of cluster nodes and is required to have at least one entry
+#      nodes:
+#        - 127.0.0.1:6379
+#        - 127.0.0.1:6380
+#        - 127.0.0.1:6381
+#      # Maximum number of redirects to follow when executing commands across the cluster
+#      maxRedirects: 3
+#    # 哨兵模式配置
+#    sentinel:
+#      # redis-server中哨兵模式的masterId，不能为空
+#      master: mymaster
+#      # 哨兵模式的密码（注意，和redis-server的密码不是同一个）
+#      password: test
+#      # redis哨兵模式的host:port（注意不是redis服务的host:port）
+#      nodes:
+#        - 127.0.0.1:26379
+#        - 127.0.0.1:26380
+#        - 127.0.0.1:26381
