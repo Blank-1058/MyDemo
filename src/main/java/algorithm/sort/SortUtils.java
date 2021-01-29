@@ -82,7 +82,10 @@ public class SortUtils {
 
     /**
      * 归并排序
-     *
+     * 分治思想：
+     * 1、把长度为n的数组分成两个长度为n/2的数组
+     * 2、分别对这两个数组使用归并排序
+     * 3、将两个排序好的数组合并成一个有序的数组
      * @param nums
      * @return
      */
@@ -137,6 +140,9 @@ public class SortUtils {
 
     /**
      * 快速排序
+     * 1、从数组中选出一个元素作为基准
+     * 2、重新排列数组，将比基准小的元素放到基准的左侧，比基准大的元素放到右侧
+     * 3、针对基准左边的数组和基准右边的数组继续递归使用快速排序
      * @param nums
      * @return
      */
@@ -174,5 +180,88 @@ public class SortUtils {
         quickSort(nums,i+1,highIndex);
     }
 
+    /**
+     * 堆排序
+     * 堆的概念：
+     * 堆的结构类似于完全二叉树
+     * 大顶堆：每个节点的元素值必定不小于其左右子节点，所以，对于大顶堆来说，根节点的元素值是最大的
+     * 小顶堆：每个节点的元素值必定不大于其左右子节点，所以，对于小顶堆来说，根节点的元素值是最小的
+     * 堆排序要按从小到大的顺序排列的话，首先要构造大顶堆
+     * 推排序要按从大到小的顺序排列的话，首先要构造小顶堆
+     * 以下代码以按照从小到大的顺序排列为例
+     * 1、将数组构造一个大顶堆
+     * 2、将堆顶元素与数组最后一个元素R(n)交换，这时数组最后一个元素R(n)是最大的
+     * 3、将R(1)~R(n-1)重新构造大顶堆
+     * 4、将堆顶元素与R(n-1)交换，这时R(n-1)和R(n)就构成了一个从小到大的有序数组
+     * 5、再将R(1)~R(n-2)构造大顶堆，这样依次构造大顶堆，将堆顶元素与当前堆的最后一个元素交换，最终构成了一个从小到大的有序数组
+     *
+     * @param nums
+     * @return
+     */
+    public static int[] heapSort(int[] nums){
+        // 构造大顶堆
+        buildMaxHeap(nums);
+        for(int i=nums.length-1;i>=0;i--){
+            // 将堆顶元素与最后一个元素交换
+            swap(nums,0,i);
+            // 继续将剩下的元素调整成一个大顶堆
+            adjustArr(nums,i,0);
+        }
+        return nums;
+    }
+
+    /**
+     * 构造大顶堆
+     * @param nums
+     */
+    private static void buildMaxHeap(int[] nums){
+        // 根据完全二叉树的性质，在层序遍历结果数组中，数组一半之后的节点肯定不包含子节点
+        // 所以下面的i从Math.floor(nums.length/2)开始逐个节点调整堆
+        for(int i=(int)(Math.floor(nums.length/2));i>=0;i--){
+            adjustArr(nums,nums.length,i);
+        }
+    }
+
+    /**
+     * 调整堆的结构
+     * @param nums
+     * @param arrLength
+     * @param
+     */
+    private static void adjustArr(int[] nums,int arrLength,int rootIndex){
+        int leftNode = 2*rootIndex+1;
+        int rightNode = 2*rootIndex+2;
+        int targetIndex = rootIndex;
+
+        if(leftNode<arrLength && nums[leftNode]>nums[targetIndex]){
+            targetIndex = leftNode;
+        }
+        if(rightNode<arrLength && nums[rightNode]>nums[targetIndex]){
+            targetIndex=rightNode;
+        }
+
+        if(targetIndex!=rootIndex){
+            // 进行堆节点调整
+            swap(nums,rootIndex,targetIndex);
+            // 继续调整子节点
+            adjustArr(nums,arrLength,targetIndex);
+        }
+
+    }
+
+    /**
+     * 交换数组中两个元素的位置
+     * @param nums
+     * @param index1
+     * @param index2
+     */
+    private static void swap(int[] nums,int index1,int index2){
+        if(index1<0 || index1>=nums.length || index2<0 || index2>=nums.length){
+            return;
+        }
+        int num = nums[index1];
+        nums[index1]=nums[index2];
+        nums[index2]=num;
+    }
 
 }

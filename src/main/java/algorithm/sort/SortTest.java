@@ -10,7 +10,7 @@ import java.util.Stack;
 public class SortTest {
 
     public static void main(String[] arg0){
-        int[] nums=new int[]{1,5,3,6,9,78,42,55};
+        int[] nums=new int[]{10,20,2,3,5,12,48,52,14,36,96,11};
         System.out.println("orig:");
         printArrays(nums);
 
@@ -38,6 +38,12 @@ public class SortTest {
         SortUtils.mergeSort(nums);
         System.out.println("mergeSort:");
         printArrays(nums);
+
+        //堆排序
+        SortUtils.heapSort(nums);
+        System.out.println("heapSort:");
+        printArrays(nums);
+
     }
 
     private static void printArrays(int[] nums){
