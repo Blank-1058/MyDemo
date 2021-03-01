@@ -2,14 +2,12 @@ package util.http;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import net.sf.cglib.core.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.*;
 import java.security.cert.X509Certificate;
 import java.util.Map;
@@ -22,6 +20,8 @@ import java.util.Objects;
  */
 public class HttpUtils {
     private static final Logger log = LoggerFactory.getLogger(HttpUtils.class);
+
+    private static final String DEFAULT_CHARSET = "UTF-8";
 
     /**
      * 发送Get请求
@@ -68,14 +68,11 @@ public class HttpUtils {
      */
     public static String doGetHttp(String url, Map<String, Object> header, Map<String, Object> params, Integer connectTimeout, Integer readTimeout) {
         StringBuilder sb = new StringBuilder(url);
-        if (params != null && !params.isEmpty()) {
-            sb.append("?");
-            for (Map.Entry entry : params.entrySet()) {
-                sb.append(entry.getKey()).append("=").append(entry.getValue()).append("&");
-            }
-            url = sb.substring(0, sb.length() - 1);
+        try{
+            url = buildRealUrlWithParams(url,params);
+        } catch (UnsupportedEncodingException e) {
+            log.error("调用HttpUtils.doGetHttp UnsupportedEncodingException, url=" + url, e);
         }
-        url = urlEncode(url);
         BufferedReader in = null;
         StringBuilder result = new StringBuilder();
         try {
@@ -93,12 +90,7 @@ public class HttpUtils {
                 conn.setRequestProperty("Accept", "*/*");
             }
             conn.setRequestProperty("connection", "Keep-Alive");
-            if (header != null && !header.isEmpty()) {
-                for (Map.Entry entry : header.entrySet()) {
-                    // 添加自定义的header
-                    conn.setRequestProperty(entry.getKey().toString(), entry.getValue().toString());
-                }
-            }
+            setHeader(conn,header);
             in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line;
             while ((line = in.readLine()) != null) {
@@ -137,15 +129,11 @@ public class HttpUtils {
      * @return
      */
     public static String doGetHttps(String url, Map<String, Object> header, Map<String, Object> params, Integer connectTimeout, Integer readTimeout) {
-        StringBuilder sb = new StringBuilder(url);
-        if (params != null && !params.isEmpty()) {
-            sb.append("?");
-            for (Map.Entry entry : params.entrySet()) {
-                sb.append(entry.getKey()).append("=").append(entry.getValue()).append("&");
-            }
-            url = sb.substring(0, sb.length() - 1);
+        try{
+            url = buildRealUrlWithParams(url,params);
+        } catch (UnsupportedEncodingException e) {
+            log.error("调用HttpUtils.doGetHttps UnsupportedEncodingException, url=" + url, e);
         }
-        url = urlEncode(url);
         BufferedReader in = null;
         StringBuilder result = new StringBuilder();
         try {
@@ -165,15 +153,9 @@ public class HttpUtils {
                 conn.setRequestProperty("Accept", "*/*");
             }
             conn.setRequestProperty("connection", "Keep-Alive");
-            conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+            setHeader(conn,header);
             conn.setSSLSocketFactory(sc.getSocketFactory());
             conn.setHostnameVerifier(new TrustAnyHostnameVerifier());
-            if (header != null && !header.isEmpty()) {
-                for (Map.Entry entry : header.entrySet()) {
-                    // 添加自定义的header
-                    conn.setRequestProperty(entry.getKey().toString(), entry.getValue().toString());
-                }
-            }
             in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line;
             while ((line = in.readLine()) != null) {
@@ -248,15 +230,11 @@ public class HttpUtils {
      * @return
      */
     public static String doPostHttp(String url, Map<String, Object> header, Map<String, Object> params, Object body, Integer connectTimeout, Integer readTimeout) {
-        StringBuilder sb = new StringBuilder(url);
-        if (params != null && !params.isEmpty()) {
-            sb.append("?");
-            for (Map.Entry entry : params.entrySet()) {
-                sb.append(entry.getKey()).append("=").append(entry.getValue()).append("&");
-            }
-            url = sb.substring(0, sb.length() - 1);
+        try{
+            url = buildRealUrlWithParams(url,params);
+        } catch (UnsupportedEncodingException e) {
+            log.error("调用HttpUtils.doPostHttp UnsupportedEncodingException, url=" + url, e);
         }
-        url = urlEncode(url);
         OutputStreamWriter out = null;
         BufferedReader in = null;
         StringBuilder result = new StringBuilder();
@@ -275,12 +253,7 @@ public class HttpUtils {
             conn.setDoOutput(true);
             conn.setDoInput(true);
             conn.setRequestProperty("Content-Type", "application/json");
-            if (header != null && !header.isEmpty()) {
-                for (Map.Entry entry : header.entrySet()) {
-                    // 添加自定义的header
-                    conn.setRequestProperty(entry.getKey().toString(), entry.getValue().toString());
-                }
-            }
+            setHeader(conn,header);
             // 获取输出流
             out = new OutputStreamWriter(conn.getOutputStream());
             // 向post请求中写入body
@@ -331,15 +304,11 @@ public class HttpUtils {
      * @return
      */
     public static String doPostHttps(String url, Map<String, Object> header, Map<String, Object> params, Object body, Integer connectTimeout, Integer readTimeout) {
-        StringBuilder sb = new StringBuilder(url);
-        if (params != null && !params.isEmpty()) {
-            sb.append("?");
-            for (Map.Entry entry : params.entrySet()) {
-                sb.append(entry.getKey()).append("=").append(entry.getValue()).append("&");
-            }
-            url = sb.substring(0, sb.length() - 1);
+        try{
+            url = buildRealUrlWithParams(url,params);
+        } catch (UnsupportedEncodingException e) {
+            log.error("调用HttpUtils.doPostHttps UnsupportedEncodingException, url=" + url, e);
         }
-        url = urlEncode(url);
         OutputStreamWriter out = null;
         BufferedReader in = null;
         StringBuilder result = new StringBuilder();
@@ -360,15 +329,10 @@ public class HttpUtils {
             conn.setDoOutput(true);
             conn.setDoInput(true);
             conn.setRequestProperty("Content-Type", "application/json");
+            setHeader(conn,header);
+
             conn.setSSLSocketFactory(sc.getSocketFactory());
             conn.setHostnameVerifier(new TrustAnyHostnameVerifier());
-
-            if (header != null && !header.isEmpty()) {
-                for (Map.Entry entry : header.entrySet()) {
-                    // 添加自定义的header
-                    conn.setRequestProperty(entry.getKey().toString(), entry.getValue().toString());
-                }
-            }
             // 获取输出流
             out = new OutputStreamWriter(conn.getOutputStream());
             // 向post请求中写入body
@@ -435,17 +399,32 @@ public class HttpUtils {
      * @param params
      * @return
      */
-    private static String buildRealUrlWithParams(String url,Map<String,Object> params){
+    private static String buildRealUrlWithParams(String url,Map<String,Object> params) throws UnsupportedEncodingException {
         StringBuilder sb = new StringBuilder(url);
         if (params != null && !params.isEmpty()) {
             sb.append("?");
-            for (Map.Entry entry : params.entrySet()) {
-                sb.append(entry.getKey()).append("=").append(entry.getValue()).append("&");
+            for (Map.Entry<String,Object> entry : params.entrySet()) {
+                // 将requestParam中使用的参数和值进行url编码
+                sb.append(URLEncoder.encode(entry.getKey(),DEFAULT_CHARSET)).append("=").append(URLEncoder.encode(entry.getValue().toString(),DEFAULT_CHARSET)).append("&");
             }
             url = sb.substring(0, sb.length() - 1);
         }
-        url = urlEncode(url);
         return url;
+    }
+
+    /**
+     * 向connection中填充header信息
+     * @param connection
+     * @param headers
+     */
+    private static void setHeader(HttpURLConnection connection,Map<String,Object> headers){
+        if(connection==null || headers==null || headers.isEmpty()){
+            return;
+        }
+        for (Map.Entry entry : headers.entrySet()) {
+            // 添加自定义的header
+            connection.setRequestProperty(entry.getKey().toString(), entry.getValue().toString());
+        }
     }
 
     /**
@@ -458,10 +437,22 @@ public class HttpUtils {
      * @return
      */
     private static String urlEncode(String url) {
-        url = url.replaceAll("\\+", "%2B");
-        url = url.replaceAll(" ", "%20");
-        url = url.replaceAll("#", "%23");
+//        url = url.replaceAll("\\+", "%2B");
+//        url = url.replaceAll(" ", "%20");
+//        url = url.replaceAll("#", "%23");
         return url;
+    }
+
+    public static void main(String[] args) {
+        String url = "http://10.110.2.83:8082/index/api/getMediaList?secret= 035c73f7-bb6b-4889-a715-d9eb2d1925cc&dd=中 文";
+        System.out.println(url);
+//        try {
+            System.out.println(url);
+            String result = doGet(url,null,null);
+            System.out.println(result);
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
     }
 
     /**
@@ -470,6 +461,10 @@ public class HttpUtils {
      * @return
      */
     private static String objectToJson(Object obj){
+        if(obj instanceof String
+                || obj instanceof Number){
+            return (String)obj;
+        }
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.setPrettyPrinting();
         Gson gson = gsonBuilder.create();
