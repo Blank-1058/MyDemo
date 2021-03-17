@@ -7,6 +7,7 @@ import com.itextpdf.layout.font.Range;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.FileInputStream;
 import java.io.InputStream;
 
 /**
@@ -43,7 +44,10 @@ public class SysFontProvider extends DefaultFontProvider {
     private void addAllCustomFonts(){
         Range rangeToLoad = addCalligraphFonts();
         for (String fontName : CUSTOM_FONTS_NAMES) {
+            // 从工程resource目录下加载字体
             try (InputStream stream = SysFontProvider.class.getResourceAsStream(CUSTOM_FONT_PATH + fontName)) {
+            // 从系统文件目录下加载字体
+//            try (InputStream stream = new FileInputStream(CUSTOM_FONT_PATH + fontName)) {
                 byte[] fontProgramBytes = StreamUtil.inputStreamToArray(stream);
                 addFont(fontProgramBytes, null, rangeToLoad);
             } catch (Exception e) {

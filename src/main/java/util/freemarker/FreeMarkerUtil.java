@@ -161,8 +161,10 @@ public class FreeMarkerUtil {
      */
     private static Configuration getConfiguration(String templatePath) throws IOException {
         Configuration configuration = new Configuration(Configuration.VERSION_2_3_31);
-        // 设置resource下面的路径
+        // 模板文件在resource目录下
         configuration.setClassForTemplateLoading(FreeMarkerUtil.class,templatePath);
+        // 模板文件在文件系统的目录下
+//        configuration.setDirectoryForTemplateLoading(new File(templatePath));
         configuration.setDefaultEncoding("utf-8");
         return configuration;
     }
